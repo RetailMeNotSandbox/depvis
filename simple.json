@@ -1,0 +1,14 @@
+[
+	{
+		"nodeName": "a",
+		"dependencyLinks": ["b", "c"]
+	},
+	{
+		"nodeName": "b",
+		"dependencyLinks": []
+	},
+	{
+		"nodeName": "c",
+		"dependencyLinks": []
+	}
+]

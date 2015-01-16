@@ -1,0 +1,254 @@
+body {
+  font-family: 'Open Sans';
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.link {
+  stroke: #ccc;
+  stroke-opacity: 1;
+}
+.link.dependency {
+  stroke: #0aa;
+}
+.link.depended-on-by {
+  stroke: #f44;
+}
+.link.dependency.light,
+.link.depended-on-by.light {
+  stroke-opacity: 0.5;
+}
+
+.node circle {
+  stroke: #000;
+  stroke-width: 2px;
+  fill: #000;
+  fill-opacity: 0.1;
+}
+
+.node.missing circle,
+.node.invalid circle {
+  stroke: #900;
+  fill: #000;
+  fill-opacity: 0.3;
+}
+
+.node.fixed circle {
+  stroke: #408;
+  fill: #000;
+  fill-opacity: 0.3;
+}
+.node.fixed text {
+  fill: #408;
+}
+
+.node.primary circle {
+  stroke: #00f;
+  stroke-opacity: 1;
+  fill: #06f;
+  fill-opacity: 0.3;
+}
+.node.primary text {
+  fill: #06f;
+}
+
+.node.dependency circle {
+  stroke: #0aa;
+  stroke-opacity: 1;
+  fill: #0aa;
+  fill-opacity: 0.3;
+}
+.node.dependency text {
+  fill: #077;
+}
+.node.dependency.light circle {
+  stroke-opacity: 0.5;
+  fill-opacity: 0.2;
+}
+.node.dependency.light text {
+  fill-opacity: 0.5;
+}
+
+.node.depended-on-by circle {
+  stroke: #f44;
+  stroke-opacity: 1;
+  fill: #303;
+  fill-opacity: 0.3;
+}
+.node.depended-on-by text {
+  fill: #f00;
+}
+.node.depended-on-by.light circle {
+  stroke-opacity: 0.5;
+  fill-opacity: 0.2;
+}
+.node.depended-on-by.light text {
+  fill-opacity: 0.5;
+}
+
+.node.highlight text {
+  stroke: #f0f;
+  stroke-opacity: 1;
+  fill: #303;
+  fill-opacity: 0.3;
+}
+.node.highlight circle {
+  fill: #f00;
+}
+
+.node.selected circle {
+  stroke: #0a0;
+  stroke-opacity: 1;
+  stroke-width: 3px;
+  fill: #0f0;
+  fill-opacity: 0.7;
+}
+.node.selected text {
+  fill: #070;
+}
+
+.node.fade circle {
+  fill-opacity: 0.02;
+  stroke-opacity: 0.09;
+}
+
+.node.fade text {
+  opacity: 0.2;
+}
+
+.orphan {
+  stroke: #ff0;
+}
+
+.node text {
+  pointer-events: none;
+  font: 14px monospace;
+}
+
+.node .text-box {
+  stroke: rgba( 0, 0, 0, 0 );
+  fill: rgba( 255, 255, 255, 0.8 );
+}
+
+#box {
+  border: 1px solid #ccc;
+}
+
+/* Legend */
+
+.legend {
+
+}
+
+/* Control UI */
+
+.node-tools {
+  padding: 10px;
+  position: absolute;
+  border: 1px solid #ccc;
+  top: 10px;
+  left: 10px;
+  bottom: 10px;
+  background-color: #fff;
+  transition: left 0.4s;
+}
+.tools {
+  padding: 10px;
+  position: absolute;
+  border: 1px solid #ccc;
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  background-color: #fff;
+  transition: right 0.4s;
+}
+.tools.collapsed {
+  right: -300px;
+}
+.node-info-wrapper {
+  float: left;
+  border-left: 1px solid #ccc;
+  padding-left: 25px;
+  margin-left: 10px;
+  height: 100%;
+  max-width: 500px;
+  display: none;
+}
+.node-info-wrapper.show {
+  display: block;
+}
+.node-info {
+  min-width: 250px;
+  overflow: scroll;
+  height: 100%;
+}
+.node-info h2 {
+  margin-top: 0;
+}
+.node-info .missing {
+  color: #f00;
+}
+.dependency-list {
+  font-family: monospace;
+  font-size: 16px;
+}
+.node-title {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 10px 0 5px;
+}
+.controls {
+  float: right;
+  width: 300px;
+  position: relative;
+  height: 100%;
+}
+.controls ul {
+  padding-left: 15px;
+}
+
+.node-tree-wrapper {
+  height: 100%;
+  float: left;
+  overflow: scroll;
+  max-width: 300px;
+}
+.node-tree-wrapper h3 {
+  margin-top: 0;
+}
+.node-tree {
+  font-family: monospace;
+  font-size: 14px;
+}
+.node-tree ul {
+  padding-left: 5px;
+  list-style-type: none;
+}
+.node-tree ul li {
+  border-left: 1px solid #eee;
+}
+.node-tree ul p {
+  margin: 0;
+}
+
+.node-tools.collapsed {
+  left: -260px;
+}
+.collapse-button {
+  position: absolute;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: #ddd;
+  border: 1px solid #888;
+  cursor: pointer;
+  text-align: center;
+}
+.collapse-button.left {
+  right: 10px;
+}
+.collapse-button.right {
+  left: -25px;
+}

@@ -1,0 +1,27 @@
+{
+  "name": "depvis",
+  "version": "2.0.4",
+  "description": "An in-browser dependency graph visualization tool.",
+  "main": "index.js",
+  "bin": {
+    "depvis": "./index.js"
+  },
+  "author": "RetailMeNot Engineering <aus-eng@rmn.com>",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^13.0.1",
+    "byline": "^4.1.1",
+    "connect": "^3.3.4",
+    "d3": "^3.5.17",
+    "ejs": "^2.3.1",
+    "express": "^4.13.0",
+    "extend": "^3.0.0",
+    "jquery": "^2.2.3",
+    "line-reader": "^0.2.4",
+    "lodash": "^2.4.2",
+    "minimist": "^1.1.0",
+    "npmlog": "^2.0.3",
+    "open": "0.0.5",
+    "serve-static": "^1.8.1"
+  }
+}

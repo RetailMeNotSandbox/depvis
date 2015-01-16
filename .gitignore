@@ -1,0 +1,12 @@
+node_modules/
+web/static/data.json
+out/
+
+
+# Anything that starts with ignore
+*.ignore
+
+# Compiled es6 modules
+
+*.es6.js
+*.es6.js.map

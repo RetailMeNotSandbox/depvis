@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+  <link href="<%- baseUrl || '' %>static/styles.css" rel="stylesheet">
+</head>
+<body>
+  <script>
+    var depvisData = <%- JSON.stringify( depvisData ) %>;
+    var depvisOpts = <%- JSON.stringify( depvisOpts ) %>;
+  </script>
+  <script type="text/javascript">
+    <%- thirdPartyDependencies %>
+    window.jQuery = window.$ = require('jquery');
+    window.d3 = require('d3');
+    window._ = require('lodash');
+  </script>
+  <script src="<%- baseUrl || '' %>static/controls/node-info.js"></script>
+  <script src="<%- baseUrl || '' %>static/controls/node-tree.js"></script>
+  <script src="<%- baseUrl || '' %>static/graph/dependency-graph.js"></script>
+  <script src="<%- baseUrl || '' %>static/graph/dependency-graph-d3.js"></script>
+  <script src="<%- baseUrl || '' %>static/graph/dependency-graph-nodes.js"></script>
+  <script src="<%- baseUrl || '' %>static/graph/dependency-graph-toolbar.js"></script>
+  <script src="<%- baseUrl || '' %>static/script.js"></script>
+  <script src="<%- baseUrl || '' %>static/pather.js"></script>
+  <div class="container">
+    <% if(!depvisOpts.hideControls){ %>
+    <div class="node-tools js-tree-view js-collapse-target" data-id="node-tools">
+      <div class="node-tree-wrapper">
+        <h3>Tree View</h3>
+        <div class="node-tree js-node-tree">
+        </div>
+      </div>
+      <div class="node-info-wrapper js-node-info">
+      </div>
+      <div class="collapse-button left js-collapse" data-direction="left" data-target="node-tools">
+        <
+      </div>
+    </div>
+    <div class="tools js-collapse-target" data-id="tools">
+      <div class="controls">
+        <div class="collapse-button right js-collapse" data-direction="right" data-target="tools">
+          >
+        </div>
+        <h2>Control Panel</h3>
+        <h3>Tools</h3>
+        <div class="js-content-search">
+          <input type="text" class="js-input" placeholder="search file contents">
+          <input type="submit" class="js-submit" value="Search">
+        </div>
+        <div class="js-title-search">
+          <input type="text" class="js-input" placeholder="highlight files by name">
+        </div>
+        <div class="js-hide-irrelevant">
+          <input type="checkbox" class="js-input" id="hide-irrelevant">
+          <label for="hide-irrelevant">Hide irrelevant files on select (warning: slow with lots of nodes!)</label>
+        </div>
+        <div class="js-deep-dependencies">
+          <input type="checkbox" class="js-input" id="deep-dependencies" checked="checked">
+          <label for="deep-dependencies">Highlight deep dependencies</label>
+        </div>
+        <div class="js-freeze">
+          <button type="button" class="js-submit">
+            Freeze Graph
+          </button>
+        </div>
+        <div class="js-fix">
+          <button type="button" class="js-submit">
+            Fix All Nodes
+          </button>
+        </div>
+        <div class="js-distance">
+          <label for="base-distance">Base Distance</label>
+          <input type="number" min="10" max="500" step="10" class="js-input-base" id="base-distance" value="<%- depvisOpts.baseDistance %>">
+          <br />
+          <label for="distance-modifier">Distance Modifier</label>
+          <input type="number" min="0.1" max="5" step="0.1" class="js-input-modifier" id="distance-modifier" value="<%- depvisOpts.distanceModifier %>">
+        </div>
+        <div class="js-charge">
+          <label for="charge">Charge</label>
+          <input type="number" min="-10000" max="10000" step="250" class="js-input-charge" id="charge" value="<%- depvisOpts.charge %>">
+          <br />
+          <label for="charge-distance">Charge Distance</label>
+          <input type="number" min="0" max="5000" step="50" class="js-input-distance" id="charge" value="<%- depvisOpts.chargeDistance %>">
+        </div>
+        <div class="js-gravity">
+          <label for="gravity">Gravity</label>
+          <input type="number" min="-1" max="2" step="0.1" class="js-input" id="gravity" value="<%- depvisOpts.gravity %>">
+        </div>
+        <div class="js-radius">
+          <p>Radius Calculation</p>
+          <input type="radio" class="js-radio" name="radius-calculation" id="radius-depended-on-by" value="depended-on-by" checked="checked"></input>
+          <label for="radius-depended-on-by">Depended on By</label>
+          <input type="radio" class="js-radio" name="radius-calculation" id="radius-content-size" value="content-size"></input>
+          <label for="radius-content-size">Content size</label>
+        </div>
+        <h3>Instructions</h3>
+        <ul>
+          <li>Select nodes to see their details and highlight dependencies</li>
+          <li>Nodes will become fixed on selection. Double-click them to unfix them</li>
+        </ul>
+        <div class="js-space-mode">
+          <button type="button" class="js-input">Space Mode</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <% } %>
+  </div>
+
+  <div id="templates">
+    <script type="text/template" class="node-info">
+      <div class="node-info">
+        <h2>Node Info</h2>
+        <h3 class="node-title">{{- nodeName }}</h3>
+        <h4>depends on</h4>
+        {{ if ( dependencyLinks.length > 0 ) { }}
+          <ul class="dependency-list">
+          {{ for ( var i = 0; i < dependencyLinks.length; i++ ) { }}
+            <li>
+              <a href="#" class="js-dependency-link" data-id="{{- dependencyLinks[ i ].nodeName || dependencyLinks[ i ].dependencyName }}">
+              <!-- dependencyName is a fallback for if we failed to find the file this file depends on -->
+              {{- dependencyLinks[ i ].nodeName || dependencyLinks[ i ].dependencyName }}
+              </a>
+            </li>
+          {{ } }}
+          {{ dependencyLinks.filter( function ( d ) { return !d.found; } ).forEach( function ( missing ) { }}
+            <li class="missing">
+            {{- missing.dependencyName }} (can't find)
+            </li>
+          {{ } ); }}
+          </ul>
+        {{ } else { }}
+          nothing :')
+        {{ } }}
+        <h4>dependend on by</h4>
+        {{ if ( dependedOnBy.length > 0 ) { }}
+          <ul class="dependency-list">
+          {{ for ( var j = 0; j < dependedOnBy.length; j++ ) { }}
+            <li>
+              <a href="#" class="js-dependency-link" data-id="{{- dependedOnBy[ j ].nodeName }}">
+              {{- dependedOnBy[ j ].nodeName }}
+              </a>
+            </li>
+          {{ } }}
+          </ul>
+        {{ } else { }}
+          nothing :')
+        {{ } }}
+
+        {{ if ( contents ) { }}
+        <div class="contents">
+          <!-- {{- contents }} -->
+        </div>
+        {{ } }}
+      </div>
+    </script>
+    <script type="text/template" class="node-tree">
+      <div>
+          <ul>
+            <li>
+            <p>
+              {{ if ( node.type === 'file' ) { }}
+              <a href="#" class="js-dependency-link" data-id="{{- node.nodeName }}">
+              {{ } }}
+              {{= node.name }}{{= node.type === 'dir' ? '/' : '' }}
+              {{ if ( node.type === 'file' ) { }}
+              </a>
+              {{ } }}
+            </p>
+            <ul>
+            {{ for ( var i in node.contents ) { }}
+              {{= templateFn( { node: node.contents[ i ], templateFn: templateFn } ) }}
+            {{ } }}
+            </ul>
+            </li>
+          </ul>
+      </div>
+    </script>
+  </div>
+</body>
+</html>
